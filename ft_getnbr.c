@@ -6,27 +6,17 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 16:16:26 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/11/30 12:25:19 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/11/30 14:10:13 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_getnbr(char *str)
+int	ft_getnbr(char c)
 {
-	size_t	i;
 	int		result;
 
 	result = 0;
-	i = 0;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while ((str[i] >= '0') && (str[i] <= '9'))
-	{
-		result = (result * 10) + (str[i] - '0');
-		i++;
-	}
-	if (str[0] == '-')
-		result = result * (-1);
+	result = (result * 10) + (c - '0');
 	return (result);
 }
