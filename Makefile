@@ -6,13 +6,15 @@
 #    By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/28 15:19:34 by bmuselet          #+#    #+#              #
-#    Updated: 2017/11/30 15:25:12 by bmuselet         ###   ########.fr        #
+#    Updated: 2017/12/04 16:37:10 by bmuselet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 SRCS = main.c\
 	   ft_reader.c\
+	   ft_reader2.c\
+	   ft_reader3.c\
 	   ft_draw.c
 OBJS = $(SRCS:.c=.o)
 INC = libft.h\

@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:17:41 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/01 12:06:15 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/04 16:38:03 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <sys/stat.h>
 # include <math.h>
 
-# define WIN_WIDTH	1300
+# define WIN_WIDTH	1200
 # define WIN_HEIGHT	1200
 
 # define BLUE 0x0041FF
@@ -50,10 +50,13 @@ typedef struct		s_mlx
 {
 	void			*pointeur_mlx;
 	void			*pointeur_window;
+	t_point			*point;
 	t_img			img;
 }					t_mlx;
 
-t_point				*ft_reader(char *av);
+char				**ft_reader(char *av);
+t_point				*ft_reader2(char *av);
+int					ft_reader3(char *av, t_mlx mlx);
 void				ft_draw(t_mlx mlx, t_point *point);
 
 #endif
