@@ -5,110 +5,94 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/30 14:40:43 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/01 17:57:14 by bmuselet         ###   ########.fr       */
+/*   Created: 2017/12/07 12:21:34 by bmuselet          #+#    #+#             */
+/*   Updated: 2017/12/07 13:35:37 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "libft/libft.h"
-#include <stdio.h>
 
-static void	ft_2Dto3D(int *x, int *y, int z)
+void	ft_draw_line(t_mlx mlx, t_point point)
 {
-	int X;
-	int Y;
-	int cst;
+	double	tx;
+	float	dx;
+	float	dy;
+	double	x;
+	double	y;
 
-	cst = z;
-	X = *x + 64;
-	Y = *y + 32;
-//	X = *x - *y;
-//	Y = (*x + *y) / 2;
-//	X = (cst * *x) - (cst * *y);
-//	Y = z + ((cst / 2) * *x) + ((cst / 2) * *y);
-	*x = X;
-	*y = Y;
-}
-
-static void	ft_draw_line2(t_mlx mlx, int x1, int y1, int x2, int y2)
-{
-	int		x;
-	int		y;
-	int		k;
-	int		i;
-
-	y = y1;
-	i = 0;
-	k = WIN_WIDTH;
-	while (y == y2 && i < (WIN_WIDTH / 20))
-	{	
-			mlx.img.data[x1 + ((y1 + (y2-y1) * (x - x1))/(x2 - x1) * (WIN_WIDTH * (WIN_HEIGHT / 20))) + k] = GREEN;
-			k = k + WIN_WIDTH;
-			i++;
+	tx = 0.0;
+	dx = (float)point.x2 - point.x1;
+	dy = (float)point.y2 - point.y1;
+	while (tx <= 1)
+	{
+		x = point.x1 + (dx * tx);
+		y = point.y1 + (dy * tx);
+		mlx_pixel_put(mlx.mlx, mlx.win, x, y, ORANGE);
+		tx += 1. / sqrt((dx * dx) + (dy * dy));
 	}
 }
 
-static void	ft_draw_line(t_mlx mlx, int x1, int y1, int x2, int y2)
+void	ft_segment_horiz(t_mlx mlx, t_point point, int x, int y)
 {
-	int		x;
-	int		y;
+	int startx;
+	int	starty;
+	int pas;
 
-	x = x1;
-	while (x <= x2)
-	{
-		mlx.img.data[x + ((y1 + (y2-y1)*(x - x1))/(x2 - x1) * (WIN_WIDTH * (WIN_HEIGHT / 20)))] = WHITE;
-		x++;
-	}
+	pas = WIN_WIDTH / 205;
+	startx = WIN_WIDTH / 3;
+	starty = WIN_HEIGHT / 2;
+	point.x1 = startx + (x * pas) - (y * pas);
+	point.y1 = starty + (x * pas / 4) + (y * pas / 4) - (point.tab[y][x] * 20);
+	point.x2 = startx + ((x + 1) * pas) - (y * pas);
+	point.y2 = starty + ((x + 1) * pas / 4) + (y * pas / 4) - \
+			(point.tab[y][x + 1] * 20);
+	ft_draw_line(mlx, point);
 }
 
-void		ft_draw(t_mlx mlx, t_point *point)
+void	ft_segment_vert(t_mlx mlx, t_point point, int x, int y)
 {
-	int		count_width;
-	int		count_height;
-	int		i;
-	int		j;
+	int startx;
+	int	starty;
+	int pas;
 
-	j = 1;
-	count_height = -1;
-	ft_2Dto3D(&point->x, &point->y, point->z);
-	while (++count_height < WIN_HEIGHT)
+	pas = WIN_WIDTH / 205;
+	startx = WIN_WIDTH / 3;
+	starty = WIN_HEIGHT / 2;
+	point.x1 = startx + (x * pas) - (y * pas);
+	point.y1 = starty + (x * pas / 4) + (y * pas / 4) - (point.tab[y][x] * 20);
+	point.x2 = startx + (x * pas) - ((y + 1) * pas);
+	point.y2 = starty + (x * pas / 4) + ((y + 1) * pas / 4) - \
+			(point.tab[y + 1][x] * 20);
+	ft_draw_line(mlx, point);
+}
+
+void	ft_draw(t_point *point, t_tools tools, t_mlx mlx)
+{
+	int i;
+	int y;
+	int x;
+
+	y = 0;
+	while (tools.content[y] != 0)
 	{
-		count_width = -1;
-		while (++count_width < WIN_WIDTH)	
+		i = 0;
+		x = 0;
+		while (tools.content[y][i] != '\0')
 		{
-			if (point->next != NULL)
+			while (tools.content[y][i] == ' ' || tools.content[y][i] == '-')
+				i++;
+			if (ft_isdigit(tools.content[y][i]) == 1)
 			{
-			//	ft_2Dto3D(&point->next->x, &point->next->y, point->next->z);
-				mlx.img.data[(point->y * (WIN_WIDTH * (WIN_HEIGHT / 20)) + (point->x * WIN_WIDTH / 20))] = WHITE;
-	//			ft_draw_line(mlx, (point->x * WIN_HEIGHT / 20), (point->y * WIN_WIDTH / 20), (point->next->x * WIN_HEIGHT / 20), (point->next->y * WIN_WIDTH / 20));
-	//			ft_draw_line2(mlx, (point->x * WIN_HEIGHT / 20), (point->y * WIN_WIDTH / 20), (point->next->x * WIN_HEIGHT / 20), (point->next->y * WIN_WIDTH / 20));
-				point = point->next;
+				if (tools.content[y][i + 1] != '\0')
+					ft_segment_horiz(mlx, *point, x, y);
+				if (tools.content[y + 1] != 0)
+					ft_segment_vert(mlx, *point, x, y);
+				x++;
+				i++;
+				while (ft_isdigit(tools.content[y][i + 1]) == 1)
+					i++;
 			}
-			else
-				mlx.img.data[(point->y * (WIN_HEIGHT / 20)) * WIN_WIDTH + (point->x * WIN_WIDTH / 20)] = 0x000000;
 		}
+		y++;
 	}
 }
-
-
-
-/*				if (point->next->x > point->x)
-				{
-				i = (point->x * (WIN_WIDTH / 10));
-				while (i < (point->next->x * (WIN_WIDTH / 10)))
-				{
-//	mlx.img.data[(point->y * (WIN_HEIGHT / 10) + (j * WIN_WIDTH))] = 0xFF00FF;
-i++;
-//	j++;
-}
-}
-//				if (point->next->y)
-//				{
-//					while (j < (WIN_WIDTH * (WIN_HEIGHT / 10)))
-//					{
-//						printf("A");
-//						mlx.img.data[(point->y * (WIN_WIDTH * (WIN_HEIGHT / 10)) + j)] = 0xFF00FF;
-//						j = j + WIN_WIDTH;
-//					}
-}*/
