@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:05:17 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/07 12:32:28 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/08 12:32:00 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,19 @@ int		**ft_new_tab(char *str, int nb_line, int nb_int)
 	return (tab);
 }
 
-t_point	ft_init(char **content, char *str, int nb_line, int nb_int)
+t_point		ft_init(char **content, char *str, int nb_line, int nb_int)
 {
 	t_point point;
 
-	point.z = 2.0;
+	point.z = 8;
 	point.tab = ft_new_tab(str, nb_line, nb_int);
+	point.x_move = WIN_WIDTH / 2;
+	point.y_move = WIN_HEIGHT / 2;
 	if (nb_line >= nb_int)
-		point.def_zoom = 400 / nb_line;
+		point.zoom = WIN_HEIGHT / (nb_line * 2);
 	else
-		point.def_zoom = 400 / nb_int;
+		point.zoom = WIN_WIDTH / (nb_int * 2);
 	return (point);
-}
-
-int		ft_escape(int keycode, void *param)
-{
-	if (keycode == 53)
-		exit(1);
-	return (0);
 }
 
 int		main(int argc, char **argv)
@@ -67,13 +62,22 @@ int		main(int argc, char **argv)
 	t_tools	tools;
 	t_point	point;
 
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+
 	tools.nb_line = 0;
-	ft_reader(argc, argv[1], &tools);
+	if (ft_reader(argc, argv[1], &tools) != 1)
+		exit(1);
+	mlx.point = &point;
+	mlx.tools = &tools;
 	mlx.mlx = mlx_init();
 	mlx.win = mlx_new_window(mlx.mlx, WIN_WIDTH, WIN_HEIGHT, "win fdf");
 	point = ft_init(tools.content, tools.str, tools.nb_line, tools.nb_int);
-	ft_draw(&point, tools, mlx);
-	mlx_key_hook(mlx.win, ft_escape, 0);
+	ft_expose_hook(&mlx);
+	mlx_key_hook(mlx.win, ft_key_events, &mlx);
 	mlx_loop(mlx.mlx);
-	return (0);
+	return 0;
 }

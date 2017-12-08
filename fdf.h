@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:17:41 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/07 13:28:24 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/08 12:22:31 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,10 @@ typedef struct		s_point
 	int				x2;
 	int				y1;
 	int				y2;
-	int				def_zoom;
+	int				zoom;
 	int				x_move;
 	int				y_move;
 }					t_point;
-
-typedef struct		s_mlx
-{
-	void			*mlx;
-	void			*win;
-
-}					t_mlx;
 
 typedef struct		s_tools
 {
@@ -62,9 +55,21 @@ typedef struct		s_tools
 
 }					t_tools;
 
+typedef struct		s_mlx
+{
+	void			*mlx;
+	void			*win;
+	t_tools			*tools;
+	t_point			*point;
+
+}					t_mlx;
+
+int					ft_key_events(int keycode, t_mlx *mlx);
 int					ft_reader(int argc, char *argv, t_tools *tools);
 int					ft_atoi_fdf(const char *str, int *c);
 void				ft_init_struct(t_tools tools, t_mlx *mlx, t_point *point);
 void				ft_draw(t_point *point, t_tools tools, t_mlx mlx);
+int					ft_check_error(char *str);
+int					ft_expose_hook(t_mlx *mlx);
 
 #endif

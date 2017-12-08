@@ -6,14 +6,12 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 18:03:24 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/07 12:24:24 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/07 18:36:25 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "libft/libft.h"
-
-#include "fdf.h"
 
 int			ft_strlen_fdf(char *str)
 {
@@ -47,6 +45,7 @@ int			ft_check_read(int argc, char *argv, int *fd)
 	if ((*fd = open(argv, O_RDONLY)) < 0)
 	{
 		ft_putstr("error : bad_file\n");
+		close(*fd);
 		return (0);
 	}
 	if (BUFF_SIZE <= 0)
@@ -61,13 +60,19 @@ int		ft_reader(int argc, char *argv, t_tools *tools)
 {
 	int		fd;
 	char	*line;
+	char	*tmp;
+	char	*tmp2;
 
 	tools->str = ft_strnew(1);
 	if (ft_check_read(argc, argv, &fd) == 0)
 		return (0);
 	while (get_next_line(fd, &line) > 0)
 	{
-		tools->str = ft_strjoin(ft_strjoin(tools->str, line), "\n");
+		tmp = tools->str;
+		tmp2 = ft_strjoin(tmp, line);
+		tools->str = ft_strjoin(tmp2, "\n");
+		free(tmp);
+		free(tmp2);
 		tools->nb_line++;
 	}
 	tools->content = ft_strsplit(tools->str, '\n');
@@ -78,9 +83,10 @@ int		ft_reader(int argc, char *argv, t_tools *tools)
 		return (0);
 	}
 	tools->nb_int = ft_strlen_fdf(tools->content[0]);
-	if (close(fd) == -1)
+	if (close(fd) == -1 || ft_check_error(tools->str) != 1)
 	{
-		ft_putstr("error : file\n");
+		ft_putstr("error: file\n");
+		free(tools->str);
 		return (0);
 	}
 	return (1);

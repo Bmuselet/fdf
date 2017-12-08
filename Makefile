@@ -6,7 +6,7 @@
 #    By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/28 15:19:34 by bmuselet          #+#    #+#              #
-#    Updated: 2017/12/07 12:29:08 by bmuselet         ###   ########.fr        #
+#    Updated: 2017/12/08 11:55:30 by bmuselet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ SRCS = main.c\
 	   ft_reader.c\
 	   ft_draw.c\
 	   ft_atoi_fdf.c\
+	   ft_check_error.c\
+	   ft_keycode.c\
 
 OBJS = $(SRCS:.c=.o)
 INC = libft.h\
