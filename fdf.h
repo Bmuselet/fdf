@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:17:41 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/08 12:22:31 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/08 17:23:09 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <sys/stat.h>
 # include <math.h>
 
-# define WIN_WIDTH	1200
-# define WIN_HEIGHT	1200
+# define WIN_WIDTH	800
+# define WIN_HEIGHT	800
 
 # define BLUE 0x0041FF
 # define WHITE 0xFFFFFF

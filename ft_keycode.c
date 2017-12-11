@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 10:46:47 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/08 12:32:03 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/08 16:12:03 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			ft_expose_hook(t_mlx *mlx)
 	return (0);
 }
 
-int		ft_zoom_in_out(int keycode, t_mlx *mlx)
+static int	ft_zoom_in_out(int keycode, t_mlx *mlx)
 {
 	if (keycode == 13 && ((mlx->point->zoom) * 2 < 1000))
 	{
@@ -52,7 +52,7 @@ int		ft_zoom_in_out(int keycode, t_mlx *mlx)
 	return (0);
 }
 
-int		ft_move(int keycode, t_mlx *mlx)
+static int	ft_move(int keycode, t_mlx *mlx)
 {
 	if (keycode == 123)
 	{
@@ -81,7 +81,7 @@ int		ft_move(int keycode, t_mlx *mlx)
 	return (0);
 }
 
-int		ft_zoom_up_down(int keycode, t_mlx *mlx)
+static int	ft_zoom_up_down(int keycode, t_mlx *mlx)
 {
 	if (keycode == 2)
 	{
@@ -98,7 +98,7 @@ int		ft_zoom_up_down(int keycode, t_mlx *mlx)
 	return (0);
 }
 
-int		ft_key_events(int keycode, t_mlx *mlx)
+int			ft_key_events(int keycode, t_mlx *mlx)
 {
 	if (keycode == 53)
 		exit(1);

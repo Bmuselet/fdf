@@ -6,7 +6,7 @@
 #    By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/28 15:19:34 by bmuselet          #+#    #+#              #
-#    Updated: 2017/12/08 11:55:30 by bmuselet         ###   ########.fr        #
+#    Updated: 2017/12/11 11:17:03 by bmuselet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ INC = libft.h\
 fdf.h\
 CC = cc
 FLAGS = -lmlx -framework OpenGl -framework AppKit
-
 LIB_PATH = libft/
 LIB = libft/libft.a
 

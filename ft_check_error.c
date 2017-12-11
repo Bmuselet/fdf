@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 17:16:01 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/07 17:46:10 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/08 15:11:05 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static int	ft_invalid(char *str, int i)
 	return (1);
 }
 
-int		ft_check_error(char *str)
+int			ft_check_error(char *str)
 {
 	int		i;
 
