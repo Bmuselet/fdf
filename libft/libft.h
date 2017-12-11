@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 18:24:03 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/11 13:29:09 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/11 14:04:08 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,13 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
-
 typedef struct		s_gnl
 {
 	char			*text;
 	char			*tempo;
 	struct s_gnl	*next;
 	int				fd;
-} 					t_gnl;
+}					t_gnl;
 
 int					ft_getnbr(char *str);
 int					get_next_line(const int fd, char **line);

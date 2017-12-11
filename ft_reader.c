@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 18:03:24 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/11 13:27:21 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/11 15:44:58 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,23 @@ static int	ft_strlen_fdf(char *str)
 		}
 	}
 	return (nb_int);
+}
+
+static int	ft_verif_int_nb(t_tools *tools)
+{
+	char	*str;
+	int		l;
+	int		c;
+
+	l = 0;
+	while (l < tools->nb_line - 1)
+	{
+		c = ft_strlen_fdf(tools->content[l]);
+		if (ft_strlen_fdf(tools->content[l + 1]) != c)
+			return (-1);
+		l++;
+	}
+	return (0);
 }
 
 static int	ft_check_read(int argc, char *argv, int *fd)
@@ -67,9 +84,15 @@ static int	ft_check_close(int fd, t_tools *tools, char *line)
 	}
 	if (close(fd) == -1 || ft_check_error(tools->str) != 1)
 	{
-		ft_putstr("error: file\n");
-		free(tools->str);
 		free(tools->content);
+		free(tools->str);
+		return (0);
+	}
+	if (ft_verif_int_nb(tools) != 0)
+	{
+		ft_putstr("error : wrong line length\n");
+		free(tools->content);
+		free(tools->str);
 		return (0);
 	}
 	return (1);

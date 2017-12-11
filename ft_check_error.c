@@ -6,11 +6,9 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/05 17:16:01 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/08 15:11:05 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/11 15:45:22 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "fdf.h"
 
 #include "fdf.h"
 
@@ -45,7 +43,7 @@ static int	ft_start_error(char *str)
 	{
 		if ((str[i] < '0' || str[i] > '9') && str[i] != '-' && str[i] != ' ')
 		{
-			ft_putstr_fd("error: lines must start by a digit or space\n", 2);
+			ft_putstr("error: lines must start by a digit or a space\n");
 			return (-1);
 		}
 		while (str[i] != '\n' && str[i] != '\0')
@@ -61,7 +59,7 @@ static int	ft_invalid(char *str, int i)
 	{
 		if (str[i] == '-' && (str[i + 1] < '0' || str[i + 1] > '9'))
 		{
-			ft_putstr_fd("error: '-' must be followed only by a digit\n", 2);
+			ft_putstr("error: '-' must be followed only by a digit\n");
 			return (-1);
 		}
 		if (str[i] != '-' && str[i] != ' ' && str[i] != '\n'\
@@ -69,12 +67,12 @@ static int	ft_invalid(char *str, int i)
 		{
 			if (str[i] == ',' && ft_check_hexadecimal(str, i, i + 9, i) == -1)
 			{
-				ft_putstr_fd("error: hexadecimal\n", 2);
+				ft_putstr("error: hexadecimal\n");
 				return (-1);
 			}
 			else
 			{
-				ft_putstr_fd("error: bad character in file\n", 2);
+				ft_putstr("error: bad character in file\n");
 				return (-1);
 			}
 		}
@@ -90,7 +88,7 @@ int			ft_check_error(char *str)
 	i = 0;
 	if (str[0] == '\0')
 	{
-		ft_putstr_fd("error: file is empty\n", 2);
+		ft_putstr("error: file is empty\n");
 		return (0);
 	}
 	while (str[i] != '\0')
