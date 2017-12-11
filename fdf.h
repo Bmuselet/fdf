@@ -6,7 +6,7 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 17:17:41 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/12/08 17:23:09 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/11 16:55:33 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ typedef struct		s_mlx
 int					ft_key_events(int keycode, t_mlx *mlx);
 int					ft_reader(int argc, char *argv, t_tools *tools);
 int					ft_atoi_fdf(const char *str, int *c);
-void				ft_init_struct(t_tools tools, t_mlx *mlx, t_point *point);
 void				ft_draw(t_point *point, t_tools tools, t_mlx mlx);
 int					ft_check_error(char *str);
 int					ft_expose_hook(t_mlx *mlx);
