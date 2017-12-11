@@ -6,78 +6,103 @@
 /*   By: bmuselet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 14:12:19 by bmuselet          #+#    #+#             */
-/*   Updated: 2017/11/28 15:59:07 by bmuselet         ###   ########.fr       */
+/*   Updated: 2017/12/11 13:35:33 by bmuselet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_end_line(char **str, char **line)
+static void		ft_list_add_last(t_gnl **save, t_gnl *elem)
 {
-	char	*tmp;
-	char	*endl;
-	int		i;
+	t_gnl *list;
 
-	i = 0;
-	endl = *str;
-	while (endl[i] != '\n')
-	{
-		if (endl[i] == '\0')
-			return (0);
-		i++;
-	}
-	tmp = &endl[i];
-	*tmp = '\0';
-	*line = ft_strdup(*str);
-	*str = ft_strdup(tmp + 1);
-	free(endl);
-	return (1);
+	list = *save;
+	while (list->next != NULL)
+		list = list->next;
+	list->next = elem;
 }
 
-static int	ft_read_file(int fd, char *buff, char **str, char **line)
+static t_gnl	*ft_create_list(int fd)
 {
-	int		ret;
-	char	*tmp;
+	t_gnl *list;
 
-	while ((ret = read(fd, buff, BUFF_SIZE)) > 0)
+	if (!(list = (t_gnl*)malloc(sizeof(*list))))
+		return (NULL);
+	list->fd = fd;
+	list->tempo = ft_strnew(0);
+	list->text = NULL;
+	list->next = NULL;
+	return (list);
+}
+
+static t_gnl	*ft_check_fd(t_gnl *save, int fd)
+{
+	t_gnl *tmp;
+	t_gnl *d_list;
+
+	tmp = NULL;
+	d_list = save;
+	while (d_list)
 	{
-		buff[ret] = '\0';
-		if (*str)
+		if (d_list->fd == fd)
+			return (d_list);
+		if (!(d_list->next))
 		{
-			tmp = *str;
-			*str = ft_strjoin(tmp, buff);
-			free(tmp);
-			tmp = NULL;
+			tmp = ft_create_list(fd);
+			ft_list_add_last(&d_list, tmp);
+			return (tmp);
 		}
-		else
-			*str = ft_strdup(buff);
-		if (ft_end_line(str, line) == 1)
-			return (1);
+		d_list = d_list->next;
+	}
+	return (NULL);
+}
+
+static int		ft_check(char *save, char **line)
+{
+	char	*fin;
+
+	if (!save)
+		return (0);
+	fin = ft_strchr(save, '\n');
+	if (fin != NULL)
+	{
+		*fin = '\0';
+		*line = ft_strdup(save);
+		ft_strncpy(save, &fin[1], ft_strlen(&fin[1]) + 1);
+		return (1);
+	}
+	else if (ft_strlen(save) > 0)
+	{
+		*line = ft_strdup(save);
+		*save = '\0';
+		return (1);
 	}
 	return (0);
 }
 
-int			get_next_line(int const fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
-	static char	*str[2147483647];
-	char		*buff;
-	int			ret;
-	int			i;
+	char			buf[BUFF_SIZE + 1];
+	static t_gnl	*save = NULL;
+	t_gnl			*tmp;
+	int				ret;
 
-	if (line == NULL || fd < 0 || \
-			fd > 2147483647 || (read(fd, str[fd], 0) < 0) \
-			|| !(buff = (char *)malloc(sizeof(char) * BUFF_SIZE + 1)))
+	if (!(save))
+		save = ft_create_list(fd);
+	if (fd == -1 || line == NULL || BUFF_SIZE <= 0)
 		return (-1);
-	if (str[fd] && ft_end_line(&str[fd], line))
-		return (1);
-	i = 0;
-	ft_bzero(buff, BUFF_SIZE + 1);
-	ret = ft_read_file(fd, buff, &str[fd], line);
-	free(buff);
-	if (ret != 0 || str[fd] == NULL || str[fd][0] == '\0')
-		return (ret);
-	*line = str[fd];
-	str[fd] = NULL;
-	free(str[fd]);
-	return (1);
+	tmp = ft_check_fd(save, fd);
+	while (!(ft_strchr(tmp->tempo, '\n')))
+	{
+		ret = read(fd, buf, BUFF_SIZE);
+		if (ret == -1)
+			return (-1);
+		if (ret == 0)
+			return (ft_check(tmp->text, line));
+		buf[ret] = '\0';
+		tmp->text = ft_strjoin(tmp->tempo, buf);
+		free(tmp->tempo);
+		tmp->tempo = tmp->text;
+	}
+	return (ft_check(tmp->text, line));
 }
